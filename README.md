@@ -20,8 +20,8 @@ to a SD card Slot (You can also access a SD card through a USB):
         python execute sd ${card}
 
 4)  When finished, it will be safe to take out the SD card, and it will contain Lubuntu (as specified
-    on the Cubietruck web site) and the EDX installation files for Cubietruck, I created, on the
-    folder  "/home/linaro/EDX"
+    on the Cubietruck web site) and the EDX installation files for Cubietruck, on the folder
+    "/home/linaro/EDX"
 
 5)  Insert the created SD card on the Cubietruck SD card slot, turn on the Cubietruck,
     and Lubuntu will load.
