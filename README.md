@@ -1,9 +1,9 @@
 x2go
 ====
 
-##################################################################################
-# Procedure for Installing the EDX Platform on Cubietruck Using a Booting SD Card
-##################################################################################
+####################################################################################
+# Instructions for Installing the EDX Platform on Cubietruck Using a Booting SD Card
+####################################################################################
 
 On a Linux or Ubuntu machine connected to the Internet and which have access
 to a SD card Slot (You can also access a SD card through a USB):
