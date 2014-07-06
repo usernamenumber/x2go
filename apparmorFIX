@@ -1,7 +1,3 @@
-#
-# Author:  Arturo Samanez
-#
-
 # Modify python_sandbox_env.yml on edxapp, tasks
 #
 # It will delete the task   "code sandbox | (bootstrap) load code sandbox profile" on edxapp,

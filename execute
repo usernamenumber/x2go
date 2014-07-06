@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-# Author:  Arturo Samanez
-#
 # This Python script, with name "execute", executes a sequence of shell-commands reading
 # them from text files.
 #
