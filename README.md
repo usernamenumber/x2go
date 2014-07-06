@@ -16,6 +16,7 @@ to a SD card Slot (You can also access a SD card through a USB):
 
   Replacing ${card} with the SD card device you are using (eg. /dev/sdc, please be sure of this
   before proceeding, so not damage happens), run:
+  
       python execute sd ${card}
 
   When finished, it will be safe to take out the SD card, and it will contain Lubuntu (as specified
@@ -27,12 +28,15 @@ to a SD card Slot (You can also access a SD card through a USB):
 
   Change directory and run the first part of the script ("update" file).
   Note: The initial installation of Lubuntu on Cubietruck has Python3
+  
       cd /home/linaro/EDX
+      
       python3 execute update
 
   When finished Cubietruck will reboot, so change directory and run the second part of the script
   which consists of the EDX installation previous steps ("edxPRE") and the main one ("edx").
   You can see the files "edxPRE" and "edx" for better understanding.
+  
       cd /home/linaro/EDX
       python3 execute edxPRE edx
 
