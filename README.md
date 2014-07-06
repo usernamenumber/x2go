@@ -55,7 +55,7 @@ to a SD card Slot (You can also access a SD card through a USB):
         cd /home/linaro/EDX
         python3 execute apparmorFIX edx
 
-10) Now, the EDX Installation will complete successfully. Because of continous development, new
+10) Now, the EDX Installation will complete successfully, but because of continous development, new
     issues may arise. In this case, the only thing left to do is for now: rebooting and trying
     to run "edx" again, as in step 8. Similarly, you can do this after canceling the running of
     "edx", if it delays too long in a specific task (which normaly runs faster) as if it appears
