@@ -1,3 +1,3 @@
-# Run the edx_sandbox.yml playbook. (From standard EDX platform installation procedure)
+# Run the edx_sandbox.yml playbook. (From standard EDX platform installation instructions)
 cd /var/tmp/configuration/playbooks
 sudo ansible-playbook -c local ./edx_sandbox.yml -i "localhost,"
