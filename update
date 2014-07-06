@@ -1,4 +1,4 @@
-# Update Ubuntu package sources. (From standard EDX platform installation procedure)
+# Update Ubuntu package sources. (From standard EDX platform installation instructions)
 sudo apt-get update -y
 sudo apt-get upgrade -y
 sudo reboot
