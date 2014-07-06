@@ -1,0 +1,61 @@
+#
+# Prepare Bootable SD Card with Lubuntu as OS for Cubietruck
+#
+# Author:  Arturo Samanez
+#
+# (Main steps taken from the official Cubietruck Lubuntu bootable SD card instrucctions)
+#
+# ______________________________________________________________________________________
+
+# Download Required Files
+sudo wget -N "http://dl.cubieboard.org/software/a20-cubietruck/lubuntu/ct-lubuntu-card0-v1.00/u-boot-sunxi-with-spl-ct-20131102.bin"
+sudo wget -N "http://dl.cubieboard.org/software/a20-cubietruck/lubuntu/ct-lubuntu-card0-v1.00/server/bootfs-part1.tar.gz"
+sudo wget -N "http://dl.cubieboard.org/software/a20-cubietruck/lubuntu/ct-lubuntu-card0-v1.00/server/rootfs-part2.tar.gz"
+
+# Variables
+#
+# The following assignation of variable "card" doesn't have effect.
+# When the script find this assignation it will set as its value to the
+# the command-line parameter that comes after the name of this file.
+#
+card=/dev/sdc
+
+# Clean SD Card
+sudo dd if=/dev/zero of=${card} bs=1024 seek=544 count=128
+
+# Make Bootable SD Card
+sudo dd if=u-boot-sunxi-with-spl-ct-20131102.bin of=${card} bs=1024 seek=8
+
+# Partition and Make File Systems on Partitions
+sudo sfdisk ${card} < sd_card_partitions.out
+sudo mkfs.ext2 ${card}1
+sudo mkfs.ext4 ${card}2
+
+# Copy System Files to SD Card
+mkdir /tmp/sdd1 /tmp/sdd2
+sudo mount -t ext2 ${card}1 /tmp/sdd1
+sudo mount -t ext4 ${card}2 /tmp/sdd2
+sudo tar -C /tmp/sdd1 -xvf bootfs-part1.tar.gz
+sudo tar -C /tmp/sdd2 -xvf rootfs-part2.tar.gz
+sync
+
+# Copy EDX Required Installation Files to /home/linaro/EDX on SD Card
+mkdir /tmp/sdd2/home/linaro/EDX
+cp README.txt /tmp/sdd2/home/linaro/EDX/README.txt
+cp execute /tmp/sdd2/home/linaro/EDX/execute
+cp update /tmp/sdd2/home/linaro/EDX/update
+cp edxPRE /tmp/sdd2/home/linaro/EDX/edxPRE
+cp edx /tmp/sdd2/home/linaro/EDX/edx
+cp apparmorFIX /tmp/sdd2/home/linaro/EDX/apparmorFIX
+cp mongo.tasks.main.yml /tmp/sdd2/home/linaro/EDX/mongo.tasks.main.yml
+cp oraclejdk.tasks.main.yml /tmp/sdd2/home/linaro/EDX/oraclejdk.tasks.main.yml
+cp oraclejdk.defaults.main.yml /tmp/sdd2/home/linaro/EDX/oraclejdk.defaults.main.yml
+cp edxapp.tasks.python_sandbox_env.yml /tmp/sdd2/home/linaro/EDX/edxapp.tasks.python_sandbox_env.yml
+
+# Unmount SD Card Partitions
+sudo umount /tmp/sdd1
+sudo umount /tmp/sdd2
+sudo rmdir /tmp/sdd1 /tmp/sdd2
+
+# Make SD Card Safe to remove (Eject) 
+sudo eject ${card}

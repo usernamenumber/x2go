@@ -1,0 +1,8 @@
+#
+# Author:  Arturo Samanez
+#
+
+# Update Ubuntu package sources. (From standard EDX platform installation procedure)
+sudo apt-get update -y
+sudo apt-get upgrade -y
+sudo reboot

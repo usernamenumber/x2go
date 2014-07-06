@@ -1,0 +1,21 @@
+#
+# Author:  Arturo Samanez
+#
+
+# Modify python_sandbox_env.yml on edxapp, tasks
+#
+# It will delete the task   "code sandbox | (bootstrap) load code sandbox profile" on edxapp,
+# tasks, python_sandbox_env.yml, for the next EDX installation trial ("edx"), it assumes that
+# in the previous run of "edx" this task has run successfully, but the installation failed
+# because a warning message that shouldn't be there, I hope this issue will be fixed in the future
+# and we will not need this fix with an extra EDX installation trial.
+#
+# Note:   Run "apparmorFIX" and "edx" files one after the other, so it is useful, and do it only
+#         after a previous EDX installation ("edx") has failed with a WARNING, on the task:
+#         "code sandbox | (bootstrap) load code sandbox profile"
+# 
+# Note 2: When doing a "yml" file modification, for now I am just replacing the file with a
+#         pre-edited one. Later I will make code for strictly modifying the file in question.
+#         This is preferable because the "yml" file may had been updated by the EDX Team.
+#
+sudo yes | cp ./edxapp.tasks.python_sandbox_env.yml /var/tmp/configuration/playbooks/roles/edxapp/tasks/python_sandbox_env.yml

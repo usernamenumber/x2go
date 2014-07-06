@@ -1,0 +1,95 @@
+#
+# Author:  Arturo Samanez
+#
+
+#######################################################
+#  Standard EDX Platform Installation Previous Steps
+#######################################################
+
+# EDX Platform Installation First Steps
+sudo apt-get install -y build-essential software-properties-common python-software-properties curl git-core libxml2-dev libxslt1-dev python-pip python-apt python-dev
+sudo pip install --upgrade pip
+sudo pip install --upgrade virtualenv
+
+# Clone the configuration repo
+cd /var/tmp
+git clone -b release https://github.com/edx/configuration
+
+# Install the ansible requirements
+cd /var/tmp/configuration
+sudo pip install -r requirements.txt
+
+#######################################################
+#  Cubietruck Specific Fixes
+#######################################################
+
+# GIT-CORE DISTRIB_ID Replacement
+#
+# At the time I did this fix
+# "apt-add-repository ppa:git-core/ppa" was working only with the
+# "DSTRIB_ID" field in the "/etc/lsb-release" file set as
+# "Ubuntu" and not as "Linaro" as it supposed to be.
+# I am not sure of the consecuenses of this change down the road,
+# but expect this platform-related issue to be fixed in the future,
+# so we can delete this fix.
+#
+OLD_TEXT_GIT="DISTRIB_ID=Linaro"
+NEW_TEXT_GIT="DISTRIB_ID=Ubuntu"
+sudo sed -i "s|${OLD_TEXT_GIT}|${NEW_TEXT_GIT}|g" /etc/lsb-release
+
+# Install Library Dependencies for Installing MongoDB
+# 
+# The following are required libraries for a direct installation of MongoDB
+# from "http://launchpadlibrarian.net"
+#
+apt-get install -y adduser libboost-filesystem1.49.0 libboost-program-options1.49.0 libboost-system1.49.0 libboost-thread1.49.0 libc6 libgcc1 libpcre3 libpcrecpp0 libsnappy1 libssl1.0.0 libstdc++6
+
+# Change dir back to /home/linaro/EDX
+cd /home/linaro/EDX
+
+# Modify main.yml for tasks MongoDB installation
+#
+# I chose to install MongoDB Server directly from
+# "http://launchpadlibrarian.net/136308685/mongodb-server_2.2.4-0ubuntu1_armhf.deb",
+# for which we also need the Client
+# "http://launchpadlibrarian.net/136308686/mongodb-clients_2.2.4-0ubuntu1_armhf.deb"
+# 
+# The following is the replacement in mongo, tasks, "main.yml" of the MongoDB
+# installation with this direct method. The EDX standard way to install MongoDB is more
+# desirable, but the standard way didn't find a repository key for this specific platform,
+# which is:  lubuntu, linaro, raring, for armhf hardware arquitecture.
+# Also, I wasn't sure of editing "main.yml on ".....roles/mongo/defaults/" directory.
+#
+sudo yes | cp ./mongo.tasks.main.yml /var/tmp/configuration/playbooks/roles/mongo/tasks/main.yml
+
+# Modify main.yml for defaults OracleJDK installation
+#
+# The following is the replacement in oraclejdk, defaults, "main.yml" with field changes
+# for this specific platform, which is:  lubuntu, linaro, raring, for armhf hardware arquitecture.
+# This corresponding version is "jdk1.7.0_60"
+#
+sudo yes | cp ./oraclejdk.defaults.main.yml /var/tmp/configuration/playbooks/roles/oraclejdk/defaults/main.yml
+
+# Modify main.yml for tasks OracleJDK installation
+#
+# Version "jdk1.7.0_60" (armhf) of OracleJDK doesnt include "javawc", so I deleted the task
+# "update alternatives javawc" in oraclejdk, tasks, "main.yml", which is a standard part
+# of a normal OracleJDK installation.
+# I don't know if the EDX platform uses it some where else. By now it didn't complain about it 
+#
+sudo yes | cp ./oraclejdk.tasks.main.yml /var/tmp/configuration/playbooks/roles/oraclejdk/tasks/main.yml
+
+# Make "nodejs" callable as "node"
+#
+# Looks like the installation calls it as "node"
+# I found the explanation of this on the following web page:
+# "http://stackoverflow.com/questions/14914715/express-js-no-such-file-or-directory"
+#
+sudo ln -s /usr/bin/nodejs /usr/local/bin/node
+
+# One more fix is explained on the file "apparmorFIX", which has to be run after
+# the specific issue happens.
+
+# Note: When doing a "yml" file modification, for now I am just replacing the file with a
+#       pre-edited one. Later I will make code for strictly modifying the file in question.
+#       The later is preferable because the "yml" file may had been updated by the EDX Team.
