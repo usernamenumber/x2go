@@ -5,7 +5,7 @@ x2go
 # Instructions for Installing the EDX Platform on Cubietruck Using a Booting SD Card
 ####################################################################################
 
-On a Linux or Ubuntu machine connected to the Internet and which have access
+On a Linux or Ubuntu machine connected to the Internet which have access
 to a SD card Slot (You can also access a SD card through a USB):
 
 1)  Put the contents of the EDX Platform Installation files for Cubietruck on an empty folder.
