@@ -20,6 +20,11 @@
 # by not passing any parameters to "execute", as in:
 #      python execute
 #
+# On a commands file like "edxPRE" the variable "replacementsFile" sets an XML file with
+# text replacements (See: "text_replacements.xml"). Then in the same commands file you
+# can use "replacetext" to replace one or more texts in the given text file.
+# See "edxPRE" for examples.
+#
 # A function for now not too practical and which has to be modified to be clean,
 # is that when a shell-commands text file has the substring "RETRY" on its name,
 # it will be only executed when the execution of a previous shell-commands text file
@@ -37,6 +42,7 @@ import os.path
 import sys
 import time
 import subprocess
+from xml.dom import minidom
 
 python = "python"
 if sys.version_info >= (3, 0):
@@ -97,7 +103,7 @@ while file_idx < max_files:
                 print(line_command)
                 sys.stdout.flush()
                 words = line_command.split("=")
-                if len(words) > 1 and words[0].find("\"") == -1:
+                if len(words) > 1 and words[0].find("\"") == -1 and words[0].find("'") == -1:
                     word_stripped = words[0].strip()
                     word_parts = word_stripped.split()
                     if len(word_parts) == 1:
@@ -117,7 +123,8 @@ while file_idx < max_files:
                             sys.stdout.flush()
                             sys.exit()
                         file_idx_add = 2
-                        variables["card"] = dev   
+                        variables["card"] = dev
+                
                 for v in variables:
                     line_command = line_command.replace("${" + v + "}", variables[v])
                 if line_command != str_aux:
@@ -157,13 +164,63 @@ while file_idx < max_files:
                     except Exception:
                         retvalue = 1
 
-                elif len(words) == 2 and words[0] == "cd":
+                if len(words) == 2 and words[0] == "cd":
                     dir_descriptor = os.open(words[1], os.O_RDONLY)
                     os.fchdir(dir_descriptor)
                     os.close(dir_descriptor)
                     if os.getcwd() == os.path.abspath(words[1]):
                         retvalue = 0
                     else:
+                        retvalue = 1
+                elif len(words) == 4 and words[1] == "replacetext" or len(words) == 3 and words[0] == "replacetext":
+                    try:
+                        replaceTexts = False
+                        file_reference = []
+                        text_indexes = []
+                        for v in variables:
+                            if v == "replacementsFile":
+                                replaceTexts = True
+                        if replaceTexts:
+                            xmldoc = minidom.parse(variables["replacementsFile"])
+                            fileItemList = xmldoc.getElementsByTagName("file")
+                            if len(words) == 4:
+                                k = 2
+                            else:
+                                k = 1
+                            file_reference = words[k].split(":")
+                            text_indexes = file_reference[1].split(",")
+                            for fileItem in fileItemList:
+                                if fileItem.getAttribute("name") == file_reference[0]:
+                                    replacementItemList = fileItem.getElementsByTagName("replacement")
+                                    for i in range(len(text_indexes)):
+                                        for replacementItem in replacementItemList:
+                                            if text_indexes[i] == replacementItem.getAttribute("id"):
+                                                oldItem = replacementItem.getElementsByTagName("old")[0]
+                                                newItem = replacementItem.getElementsByTagName("new")[0]
+                                                txt_to_repl = ""
+                                                if len(oldItem.childNodes) > 0:
+                                                    txt_to_repl = oldItem.childNodes[0].nodeValue
+                                                txt_repl = ""
+                                                if len(newItem.childNodes) > 0:
+                                                    txt_repl = newItem.childNodes[0].nodeValue
+                                                with open(words[k + 1], "r+") as f:
+                                                    file_text = f.read()
+                                                    file_text = file_text.replace(txt_to_repl, txt_repl)
+                                                    f.seek(0)
+                                                    f.write(file_text)
+                                                    f.truncate()
+                                                print("REPLACED : -----------------------")
+                                                print(txt_to_repl)
+                                                print("WITH : ---------------------------")
+                                                print(txt_repl)
+                                                print("----------------------------------")
+                            retvalue = 0
+                        else:
+                            retvalue = 1
+                    except KeyboardInterrupt:
+                        kbinterrupt = True
+                        retvalue = 1
+                    except:
                         retvalue = 1
                 else:
                     try:

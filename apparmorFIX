@@ -9,9 +9,10 @@
 # Note:   Run "apparmorFIX" and "edx" files one after the other, so it is useful, and do it only
 #         after a previous EDX installation ("edx") has failed with a WARNING, on the task:
 #         "code sandbox | (bootstrap) load code sandbox profile"
-# 
-# Note 2: When doing a "yml" file modification, for now I am just replacing the file with a
-#         pre-edited one. Later I will make code for strictly modifying the file in question.
-#         This is preferable because the "yml" file may had been updated by the EDX Team.
 #
-sudo yes | cp ./edxapp.tasks.python_sandbox_env.yml /var/tmp/configuration/playbooks/roles/edxapp/tasks/python_sandbox_env.yml
+
+# Set Texts-Replacement-File variable
+replacementsFile=text_replacements.xml
+
+# do the Replacement
+replacetext edxapp.tasks.python_sandbox_env.yml:1 /var/tmp/configuration/playbooks/roles/edxapp/tasks/python_sandbox_env.yml

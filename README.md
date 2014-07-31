@@ -33,11 +33,12 @@ to a SD card Slot (You can also access a SD card through a USB):
         python3 execute update
 
 7)  When finished Cubietruck will reboot, so change directory and run the second part of the script
-    which consists of the EDX installation previous steps ("edxPRE") and the main one ("edx").
-    You can see the files "edxPRE" and "edx" for better understanding.
+    which consists of the EDX installation previous steps ("edxPRE"), the specific fixes for this
+    platform ("fixes"), and the main EDX installation step ("edx"). You can see the files: "edxPRE",
+    "fixes", and "edx", for better understanding.
   
         cd /home/linaro/EDX
-        python3 execute edxPRE edx
+        python3 execute edxPRE fixes edx
 
 8)  At this point the installation will fail when running "edx", trying to make sure NGINX is started.
     A reboot will fix this, so reboot and re-run "edx".
