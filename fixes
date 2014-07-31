@@ -9,7 +9,7 @@
 # "DSTRIB_ID" field in the "/etc/lsb-release" file set as
 # "Ubuntu" and not as "Linaro" as it supposed to be.
 # I am not sure of the consecuenses of this change down the road,
-# but expect this platform-related issue to be fixed in the future,
+# but expect this platform-related issue to be fixed in the future
 # so we can delete this fix.
 #
 OLD_TEXT_GIT="DISTRIB_ID=Linaro"
@@ -23,7 +23,7 @@ sudo sed -i "s|${OLD_TEXT_GIT}|${NEW_TEXT_GIT}|g" /etc/lsb-release
 #
 apt-get install -y adduser libboost-filesystem1.49.0 libboost-program-options1.49.0 libboost-system1.49.0 libboost-thread1.49.0 libc6 libgcc1 libpcre3 libpcrecpp0 libsnappy1 libssl1.0.0 libstdc++6
 
-# Change dir back to /home/linaro/EDX
+# Make sure the current dir is set to /home/linaro/EDX
 cd /home/linaro/EDX
 
 # Set Texts-Replacement-File variable
