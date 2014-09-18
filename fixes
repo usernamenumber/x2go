@@ -69,5 +69,12 @@ replacetext oraclejdk.tasks.main.yml:1 /var/tmp/configuration/playbooks/roles/or
 #
 sudo ln -s /usr/bin/nodejs /usr/local/bin/node
 
+# This is needed for matplotlib to be able to be installed
+#
+# matplotlib requires freetype or freetype2, and installing libxft-dev seems to solve
+# the following issue:  [pkg-config information for freetype2 could not be found.]
+#
+sudo apt-get install -y libxft-dev
+
 # One more fix is explained on the file "apparmorFIX", which has to be run after
 # the specific issue happens.
