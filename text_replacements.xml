@@ -21,7 +21,7 @@
   apt: >
     pkg=mongodb-10gen={{ mongo_version }}
     state=present install_recommends=yes
-    update_cache=yes
+    force=yes update_cache=yes
 ]]></old>
         <new><![CDATA[
 - name: download mongodb-clients_2.2.4-0ubuntu1_armhf.deb
@@ -80,6 +80,8 @@
 - name: update alternatives javaws
   shell: >
     update-alternatives --install "/usr/bin/javaws" "javaws" "/usr/lib/jvm/{{ oraclejdk_base }}/bin/javaws" 1
+  register: update_alt
+  changed_when: update_alt.stdout != ""
 ]]></old>
         <new><![CDATA[]]></new>
     </replacement>
