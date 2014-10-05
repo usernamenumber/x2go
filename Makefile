@@ -12,9 +12,9 @@ img_fn = hda.img
 mounts_dir = mnt
 
 	
-.PHONY: all clean do_populate get_loop_info
+.PHONY: all clean do_populate get_loop_info do_unmount
 
-all: do_populate
+all: do_populate do_unmount
 
 img_bootsect = $(notdir $(url_bootsect))
 $(img_bootsect):
