@@ -48,13 +48,6 @@ $(img_fn):
 	parted -s $(img_fn) mkpart primary 64M $(img_size)G
 	
 
-foo = "fooval"
-test_varold:
-	@echo "FOO1: $(foo)"
-	@$(eval foo = $(shell echo "$(foo) UPDATED"))
-	@echo "FOO2: $(foo)"
-	
-	
 # First dependency on $fs_devs will redefine it as the
 # actual devices mapped to the boot and root partitions
 fs_devs = $(img_fn) get_loop_devs
