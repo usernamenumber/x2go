@@ -47,6 +47,8 @@ cp fixes /tmp/sdd2/home/linaro/EDX/fixes
 cp edx /tmp/sdd2/home/linaro/EDX/edx
 cp apparmorFIX /tmp/sdd2/home/linaro/EDX/apparmorFIX
 cp text_replacements.xml /tmp/sdd2/home/linaro/EDX/text_replacements.xml
+cp mongo_tasks_main.yml /tmp/sdd2/home/linaro/EDX/mongo_tasks_main.yml
+cp mongo_defaults_main.yml /tmp/sdd2/home/linaro/EDX/mongo_defaults_main.yml
 
 # Unmount SD Card Partitions
 sudo umount /tmp/sdd1

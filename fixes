@@ -42,7 +42,9 @@ replacementsFile=text_replacements.xml
 # which is:  lubuntu, linaro, raring, for armhf hardware arquitecture.
 # Also, I wasn't sure of editing "main.yml on ".....roles/mongo/defaults/" directory.
 #
-replacetext mongo.tasks.main.yml:1 /var/tmp/configuration/playbooks/roles/mongo/tasks/main.yml
+#replacetext mongo.tasks.main.yml:1 /var/tmp/configuration/playbooks/roles/mongo/tasks/main.yml
+sudo cp mongo_tasks_main.yml /var/tmp/configuration/playbooks/roles/mongo/tasks/main.yml
+sudo cp mongo_defaults_main.yml /var/tmp/configuration/playbooks/roles/mongo/defaults/main.yml
 
 # Modify main.yml for defaults OracleJDK installation
 #
